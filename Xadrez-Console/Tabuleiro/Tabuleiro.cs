@@ -1,19 +1,16 @@
 ﻿namespace tabuleiro
 {
-    internal class Posicao
+    internal class Tabuleiro
     {
         public int Linha { get; set; }
         public int Coluna { get; set; }
+        private Peca[,] Pecas;
 
-        public Posicao(int linha, int coluna)
+        public Tabuleiro(int linha, int coluna)
         {
             Linha = linha;
             Coluna = coluna;
-        }
-
-        public override string ToString()
-        {
-            return Linha + ", " + Coluna;
+            Pecas = new Peca[linha, coluna];
         }
     }
 }
