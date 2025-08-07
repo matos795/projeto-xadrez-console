@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Authentication.ExtendedProtection;
 using tabuleiro;
+using xadrez;
 
 namespace Xadrez_Console.Extensions
 {
@@ -26,6 +27,14 @@ namespace Xadrez_Console.Extensions
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static PosicaoXadrez ReadPosition()
+        {
+            string x = Console.ReadLine();
+            char column = x[0];
+            int line = int.Parse(x[1] + "");
+            return new PosicaoXadrez(column, line);
         }
 
         public static void PrintPeca(Peca peca)

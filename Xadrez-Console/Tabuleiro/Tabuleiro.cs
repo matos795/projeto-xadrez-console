@@ -1,4 +1,5 @@
 ﻿using BoardExceptions;
+using System.Net.Security;
 
 namespace tabuleiro
 {
@@ -33,6 +34,21 @@ namespace tabuleiro
             }
             Pecas[pos.Linha, pos.Coluna] = p;
             p.Posicao = pos;
+        }
+
+        public Peca retirarPeca(Posicao pos)
+        {
+            if (Peca(pos) == null)
+            {
+                return null;
+            }
+            else
+            {
+                Peca aux = Peca(pos);
+                aux.Posicao = null;
+                Pecas[pos.Linha, pos.Coluna] = null;
+                return aux;
+            }
         }
 
         public bool existePeca(Posicao pos)
