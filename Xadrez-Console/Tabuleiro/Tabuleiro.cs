@@ -7,23 +7,23 @@ namespace tabuleiro
     {
         public int Linha { get; set; }
         public int Coluna { get; set; }
-        private Peca[,] Pecas;
+        private Peca[,] PecasMatriz;
 
         public Tabuleiro(int linha, int coluna)
         {
             Linha = linha;
             Coluna = coluna;
-            Pecas = new Peca[linha, coluna];
+            PecasMatriz = new Peca[linha, coluna];
         }
 
-        public Peca Peca(int linha, int coluna)
+        public Peca getPeca(int linha, int coluna)
         {
-            return Pecas[linha, coluna];
+            return PecasMatriz[linha, coluna];
         }
 
-        public Peca Peca(Posicao pos)
+        public Peca getPeca(Posicao pos)
         {
-            return Pecas[pos.Linha, pos.Coluna];
+            return PecasMatriz[pos.Linha, pos.Coluna];
         }
 
         public void colocarPeca(Peca p, Posicao pos)
@@ -32,21 +32,21 @@ namespace tabuleiro
             {
                 throw new TabuleiroException("Já existe uma peça nessa posição!");
             }
-            Pecas[pos.Linha, pos.Coluna] = p;
+            PecasMatriz[pos.Linha, pos.Coluna] = p;
             p.Posicao = pos;
         }
 
         public Peca retirarPeca(Posicao pos)
         {
-            if (Peca(pos) == null)
+            if (getPeca(pos) == null)
             {
                 return null;
             }
             else
             {
-                Peca aux = Peca(pos);
+                Peca aux = getPeca(pos);
                 aux.Posicao = null;
-                Pecas[pos.Linha, pos.Coluna] = null;
+                PecasMatriz[pos.Linha, pos.Coluna] = null;
                 return aux;
             }
         }
@@ -54,7 +54,7 @@ namespace tabuleiro
         public bool existePeca(Posicao pos)
         {
             validarPosicao(pos);
-            return Peca(pos) != null;
+            return getPeca(pos) != null;
         }
 
         public bool posicaoValida(Posicao pos)

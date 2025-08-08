@@ -1,4 +1,6 @@
-﻿namespace tabuleiro
+﻿using System;
+
+namespace tabuleiro
 {
     internal class Posicao
     {
@@ -6,6 +8,11 @@
         public int Coluna { get; set; }
 
         public Posicao(int linha, int coluna)
+        {
+            Linha = linha;
+            Coluna = coluna;
+        }
+        public void ChangeValue(int linha, int coluna)
         {
             Linha = linha;
             Coluna = coluna;

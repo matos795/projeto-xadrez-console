@@ -1,6 +1,6 @@
 ﻿namespace tabuleiro
 {
-    internal class Peca
+    internal abstract class Peca
     {
         public Posicao Posicao { get; set; }
         public Cor Cor { get; protected set; }
@@ -14,6 +14,13 @@
             Tab = tab;
             QtdMovimentos = 0;
         }
+
+        protected bool MovePermission(Posicao pos)
+        {
+            Peca p = Tab.getPeca(pos);
+            return p == null || p.Cor != Cor;
+        }
+        public abstract bool[,] MovesPossibles();
 
         public void incrementarQtdMovimentos()
         {
