@@ -24,10 +24,7 @@ namespace Xadrez_Console
                     {
                         Console.Clear();
                         Tela.PrintBoard(game.tab);
-
-                        Console.WriteLine("Turno: " + game.turno);
-                        Console.WriteLine("Aguardando jogada: " + game.jogadorAtual);
-
+                        Tela.PrintGame(game);
                         Console.WriteLine();
                         Console.Write("Origem: ");
                         Posicao origem = Tela.ReadPosition().toPosicao();
@@ -37,7 +34,7 @@ namespace Xadrez_Console
 
                         Console.Clear();
                         Tela.PrintBoard(game.tab, possiblePositions);
-
+                        Tela.PrintGame(game);
                         Console.WriteLine();
                         Console.Write("Destino: ");
                         Posicao destino = Tela.ReadPosition().toPosicao();
@@ -46,8 +43,12 @@ namespace Xadrez_Console
                     }
                     catch(TabuleiroException e)
                     {
+                        ConsoleColor aux = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine();
                         Console.Write(e.Message);
                         Console.Write(" Aperte [Enter] para refazer a jogada!");
+                        Console.ForegroundColor = aux;
                         Console.ReadLine();
                     }
                 }
