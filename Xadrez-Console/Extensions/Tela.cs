@@ -31,6 +31,7 @@ namespace Xadrez_Console.Extensions
                 Console.WriteLine();
             }
             Console.WriteLine("   a  b  c  d  e  f  g  h");
+            Console.WriteLine();
         }
 
         public static void PrintBoard(Tabuleiro tab, bool[,] movesPossibles)
@@ -59,7 +60,7 @@ namespace Xadrez_Console.Extensions
                 Console.WriteLine();
             }
             Console.WriteLine("   a  b  c  d  e  f  g  h");
-
+            Console.WriteLine();
         }
 
         public static PosicaoXadrez ReadPosition()
