@@ -13,6 +13,7 @@ namespace xadrez
         public bool terminada { get; private set; }
         private HashSet<Peca> TotalPecas;
         private HashSet<Peca> Capturadas;
+        public bool Xeque { get; private set; }
 
         public PartidaXadrez()
         {
@@ -21,19 +22,21 @@ namespace xadrez
             jogadorAtual = Cor.Branca;
             TotalPecas = new HashSet<Peca>();
             Capturadas = new HashSet<Peca>();
+            Xeque = false;
             setAllPecas();
         }
 
-        public void Movimentar(Posicao origem, Posicao destino)
+        public Peca Movimentar(Posicao origem, Posicao destino)
         {
             Peca p = tab.retirarPeca(origem);
             p.incrementarQtdMovimentos();
             Peca pCapturada = tab.retirarPeca(destino);
             tab.colocarPeca(p, destino);
-            if(pCapturada != null)
+            if (pCapturada != null)
             {
                 Capturadas.Add(pCapturada);
             }
+            return pCapturada;
         }
 
         public HashSet<Peca> pecasCapturadas(Cor cor)
@@ -41,11 +44,51 @@ namespace xadrez
             HashSet<Peca> aux = new HashSet<Peca>();
             foreach (Peca x in Capturadas)
             {
-                if(x.Cor == cor)
+                if (x.Cor == cor)
                 {
                     aux.Add(x);
                 }
-            } return aux;
+            }
+            return aux;
+        }
+
+        private Cor adversaria(Cor cor)
+        {
+            if (cor == Cor.Branca)
+            {
+                return Cor.Preta;
+            }
+            else
+            {
+                return Cor.Branca;
+            }
+        }
+
+        private Peca rei(Cor cor)
+        {
+            foreach (Peca x in pecasInGame(cor))
+            {
+                if (x is Rei)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool InXeque(Cor cor)
+        {
+            Peca R = rei(cor);
+
+            foreach (Peca p in pecasInGame(adversaria(cor)))
+            {
+                bool[,] mat = p.MovesPossibles();
+                if (mat[R.Posicao.Linha, R.Posicao.Coluna])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public HashSet<Peca> pecasInGame(Cor cor)
@@ -61,20 +104,48 @@ namespace xadrez
             aux.ExceptWith(pecasCapturadas(cor));
             return aux;
         }
+
+        public void cancelMove(Posicao origem, Posicao destino, Peca pCapturada)
+        {
+            Peca p = tab.retirarPeca(destino);
+            p.decrementarQtdMovimentos();
+            if (pCapturada != null)
+            {
+                tab.colocarPeca(pCapturada, destino);
+                Capturadas.Remove(pCapturada);
+            }
+            tab.colocarPeca(p, origem);
+        }
         public void RealizarJogada(Posicao origem, Posicao destino)
         {
-            Movimentar(origem, destino);
-            turno++;
+            Peca pCap = Movimentar(origem, destino);
+
+            if (InXeque(jogadorAtual))
+            {
+                cancelMove(origem, destino, pCap);
+                throw new TabuleiroException("Você não pode se colocar em xeque!");
+            }
+
+            if (InXeque(adversaria(jogadorAtual)))
+            {
+                Xeque = true;
+            }
+            else
+            {
+                Xeque = false;
+            }
+
+                turno++;
             changePlayer();
         }
 
         public void ValidarPosOrigem(Posicao pos)
         {
-            if(tab.getPeca(pos) == null)
+            if (tab.getPeca(pos) == null)
             {
                 throw new TabuleiroException("Não existe peça na posição escolhida!");
             }
-            if(jogadorAtual != tab.getPeca(pos).Cor)
+            if (jogadorAtual != tab.getPeca(pos).Cor)
             {
                 throw new TabuleiroException("A peça de origem escolhida não é sua!");
             }
@@ -94,7 +165,7 @@ namespace xadrez
 
         public void changePlayer()
         {
-            if(jogadorAtual == Cor.Branca)
+            if (jogadorAtual == Cor.Branca)
             {
                 jogadorAtual = Cor.Preta;
             }

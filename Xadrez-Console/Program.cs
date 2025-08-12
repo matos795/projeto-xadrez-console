@@ -47,7 +47,7 @@ namespace Xadrez_Console
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine();
                         Console.Write(e.Message);
-                        Console.Write(" Aperte [Enter] para refazer a jogada!");
+                        Console.Write(" Aperte [Enter] para refazer a jogada! ");
                         Console.ForegroundColor = aux;
                         Console.ReadLine();
                     }
