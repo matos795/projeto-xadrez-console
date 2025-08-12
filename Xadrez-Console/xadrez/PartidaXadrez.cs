@@ -79,6 +79,10 @@ namespace xadrez
         public bool InXeque(Cor cor)
         {
             Peca R = rei(cor);
+            if(rei(cor) == null)
+            {
+                throw new TabuleiroException("Um rei está faltando ao tabuleiro!");
+            }
 
             foreach (Peca p in pecasInGame(adversaria(cor)))
             {
@@ -222,19 +226,40 @@ namespace xadrez
         private void setAllPecas()
         {
 
-            setNewPeca('c', 1, new Torre(tab, Cor.Branca));
-            setNewPeca('c', 2, new Torre(tab, Cor.Branca));
-            setNewPeca('d', 2, new Torre(tab, Cor.Branca));
-            setNewPeca('e', 2, new Torre(tab, Cor.Branca));
-            setNewPeca('e', 1, new Torre(tab, Cor.Branca));
-            setNewPeca('d', 1, new Rei(tab, Cor.Branca));
+            setNewPeca('a', 1, new Torre(tab, Cor.Branca));
+            setNewPeca('b', 1, new Cavalo(tab, Cor.Branca));
+            setNewPeca('c', 1, new Bispo(tab, Cor.Branca));
+            setNewPeca('d', 1, new Dama(tab, Cor.Branca));
+            setNewPeca('e', 1, new Rei(tab, Cor.Branca));
+            setNewPeca('f', 1, new Bispo(tab, Cor.Branca));
+            setNewPeca('g', 1, new Cavalo(tab, Cor.Branca));
+            setNewPeca('h', 1, new Torre(tab, Cor.Branca));
+            setNewPeca('a', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('b', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('c', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('d', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('e', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('f', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('g', 2, new Peao(tab, Cor.Branca));
+            setNewPeca('h', 2, new Peao(tab, Cor.Branca));
 
-            setNewPeca('c', 7, new Torre(tab, Cor.Preta));
-            setNewPeca('c', 8, new Torre(tab, Cor.Preta));
-            setNewPeca('d', 7, new Torre(tab, Cor.Preta));
-            setNewPeca('e', 7, new Torre(tab, Cor.Preta));
-            setNewPeca('e', 8, new Torre(tab, Cor.Preta));
-            setNewPeca('d', 8, new Rei(tab, Cor.Preta));
+
+            setNewPeca('a', 8, new Torre(tab, Cor.Preta));
+            setNewPeca('b', 8, new Cavalo(tab, Cor.Preta));
+            setNewPeca('c', 8, new Bispo(tab, Cor.Preta));
+            setNewPeca('d', 8, new Dama(tab, Cor.Preta));
+            setNewPeca('e', 8, new Rei(tab, Cor.Preta));
+            setNewPeca('f', 8, new Bispo(tab, Cor.Preta));
+            setNewPeca('g', 8, new Cavalo(tab, Cor.Preta));
+            setNewPeca('h', 8, new Torre(tab, Cor.Preta));
+            setNewPeca('a', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('b', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('c', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('d', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('e', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('f', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('g', 7, new Peao(tab, Cor.Preta));
+            setNewPeca('h', 7, new Peao(tab, Cor.Preta));
         }
     }
 }
