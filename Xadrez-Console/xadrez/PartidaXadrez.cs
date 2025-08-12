@@ -91,6 +91,37 @@ namespace xadrez
             return false;
         }
 
+        public bool TestXequeMate(Cor cor)
+        {
+            if (!InXeque(cor))
+            {
+                return false;
+            }
+            foreach(Peca x in pecasInGame(cor))
+            {
+                bool[,] mat = x.MovesPossibles();
+                for(int i = 0; i < tab.Linha; i++)
+                {
+                    for(int j = 0; j < tab.Coluna; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = x.Posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = Movimentar(origem, destino);
+                            bool testeXeque = InXeque(cor);
+                            cancelMove(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public HashSet<Peca> pecasInGame(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
@@ -135,8 +166,15 @@ namespace xadrez
                 Xeque = false;
             }
 
+            if (TestXequeMate(adversaria(jogadorAtual)))
+            {
+                terminada = true;
+            }
+            else
+            {
                 turno++;
-            changePlayer();
+                changePlayer();
+            }
         }
 
         public void ValidarPosOrigem(Posicao pos)
