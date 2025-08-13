@@ -55,7 +55,6 @@ namespace Xadrez_Console.Extensions
         public static void PrintBoard(Tabuleiro tab)
         {
             ConsoleColor fundoOriginal = Console.BackgroundColor;
-            ConsoleColor fundoNovo = ConsoleColor.Red;
 
             for (int i = 0; i < tab.Linha; i++)
             {
