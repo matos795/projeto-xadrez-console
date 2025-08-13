@@ -9,11 +9,11 @@ namespace xadrez
 {
     internal class Peao : Peca
     {
-        public Peao(Tabuleiro tab, Cor cor) : base(tab, cor)
+        private PartidaXadrez game;
+        public Peao(Tabuleiro tab, Cor cor, PartidaXadrez game) : base(tab, cor)
         {
-
+            this.game = game;
         }
-
         private bool existEnemy(Posicao pos)
         {
             Peca p = Tab.getPeca(pos);
@@ -55,6 +55,23 @@ namespace xadrez
                 {
                     mat[pos.Linha, pos.Coluna] = true;
                 }
+
+                // # EN PASSANT
+
+                if(Posicao.Linha == 3)
+                {
+                    Posicao leftPosition = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+                    Posicao rightPosition = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+
+                    if (Tab.posicaoValida(leftPosition) && existEnemy(leftPosition) && Tab.getPeca(leftPosition) == game.vulneravelEnPassant)
+                    {
+                        mat[leftPosition.Linha - 1, leftPosition.Coluna] = true;
+                    } 
+                    else if(Tab.posicaoValida(rightPosition) && existEnemy(rightPosition) && Tab.getPeca(rightPosition) == game.vulneravelEnPassant)
+                    {
+                        mat[rightPosition.Linha - 1, rightPosition.Coluna] = true;
+                    }
+                }
             }
             else
             {
@@ -80,6 +97,23 @@ namespace xadrez
                 if (Tab.posicaoValida(pos) && existEnemy(pos))
                 {
                     mat[pos.Linha, pos.Coluna] = true;
+                }
+
+                // # EN PASSANT
+
+                if (Posicao.Linha == 4)
+                {
+                    Posicao leftPosition = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+                    Posicao rightPosition = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+
+                    if (Tab.posicaoValida(leftPosition) && existEnemy(leftPosition) && Tab.getPeca(leftPosition) == game.vulneravelEnPassant)
+                    {
+                        mat[leftPosition.Linha + 1, leftPosition.Coluna] = true;
+                    }
+                    if (Tab.posicaoValida(rightPosition) && existEnemy(rightPosition) && Tab.getPeca(rightPosition) == game.vulneravelEnPassant)
+                    {
+                        mat[rightPosition.Linha + 1, rightPosition.Coluna] = true;
+                    }
                 }
             }
                 return mat;
