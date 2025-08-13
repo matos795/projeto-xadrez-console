@@ -14,6 +14,7 @@ namespace xadrez
         private HashSet<Peca> TotalPecas;
         private HashSet<Peca> Capturadas;
         public Peca vulneravelEnPassant;
+        private bool promocao { get; set; }
         public bool Xeque { get; private set; }
 
         public PartidaXadrez()
@@ -24,6 +25,7 @@ namespace xadrez
             TotalPecas = new HashSet<Peca>();
             Capturadas = new HashSet<Peca>();
             Xeque = false;
+            promocao = false;
             setAllPecas();
             vulneravelEnPassant = null;
         }
@@ -78,6 +80,44 @@ namespace xadrez
             }
 
             return pCapturada;
+        }
+
+        public void escolhaPromocao(string s, Peca peca, Posicao pos)
+        {
+            Peca p;
+            int i = 0;
+            if (int.TryParse(s, out i))
+            {
+                switch (i)
+                {
+                    case 1:
+                        p = new Dama(tab, peca.Cor);
+                        break;
+                    case 2:
+                        p = new Bispo(tab, peca.Cor);
+                        break;
+                    case 3:
+                        p = new Torre(tab, peca.Cor);
+                        break;
+                    case 4:
+                        p = new Cavalo(tab, peca.Cor);
+                        break;
+                    default:
+                        p = new Dama(tab, peca.Cor);
+                        break;
+                }
+                tab.colocarPeca(p, pos);
+                TotalPecas.Add(p);
+                promocao = false;
+            }
+            else
+            {
+                p = new Dama(tab, peca.Cor);
+                tab.colocarPeca(p, pos);
+                TotalPecas.Add(p);
+                promocao = false;
+                throw new TabuleiroException("Valor digitado não é um número óu é inválido! Peça será uma Dama!");
+            }
         }
 
         public HashSet<Peca> pecasCapturadas(Cor cor)
@@ -238,6 +278,29 @@ namespace xadrez
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
 
+            Peca p = tab.getPeca(destino);
+
+            // # Jogada Especial Promocao
+            if (p is Peao && (p.Cor == Cor.Branca && destino.Linha == 0) || (p.Cor == Cor.Preta && destino.Linha == 7))
+            {
+                promocao = true;
+                p = tab.retirarPeca(destino);
+                TotalPecas.Remove(p);
+
+                Console.WriteLine("Peão promovido! Escolha um número:");
+                Console.WriteLine("1 - Dama");
+                Console.WriteLine("2 - Bispo");
+                Console.WriteLine("3 - Torre");
+                Console.WriteLine("4 - Cavalo");
+
+                string s = Console.ReadLine();
+                escolhaPromocao(s, p, destino);
+            }
+            else
+            {
+                promocao = false;
+            }
+
             if (InXeque(adversaria(jogadorAtual)))
             {
                 Xeque = true;
@@ -256,8 +319,6 @@ namespace xadrez
                 turno++;
                 changePlayer();
             }
-
-            Peca p = tab.getPeca(destino);
 
             // # Jogada especial En Passant
 
